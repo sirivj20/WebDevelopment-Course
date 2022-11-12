@@ -1,0 +1,4 @@
+*.zip
+__MACOSX
+node_modules
+*.DS_Store
