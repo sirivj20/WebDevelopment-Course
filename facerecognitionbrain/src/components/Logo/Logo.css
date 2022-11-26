@@ -1,0 +1,14 @@
+
+   
+
+.tiltComponent{
+    
+    height: 150px;
+    width: 150px;
+    background-image: linear-gradient(89deg,#FF5EDF 0%, #04C8DE 100%);
+}
+.image{
+    height :100px;
+    width: 100px;
+    margin-top: 25px;;
+}
