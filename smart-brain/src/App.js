@@ -2,7 +2,7 @@ import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import './App.css'
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import ParticlesBg from 'particles-bg';
@@ -21,6 +21,8 @@ const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';
 
 function  App ()  {
 
+ 
+
   //UseSate 
 
   const[input,setInput] = useState('');
@@ -28,6 +30,36 @@ function  App ()  {
   const[box,setBox] = useState({});
   const [route,setRoute] = useState('signin');
   const [isSignedIn,setisSignedIn] = useState(false);
+  const [user,setUser]=useState({
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  })
+
+  const loadUser = (data) => {
+    setUser({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    })
+  }
+
+  const handleChange = (count) => {
+    setUser({
+      name : user.name ,
+      entries : count
+    })
+  }
+   //server connection checking
+  /*  useEffect(()=> {
+    fetch('http://Localhost:3001/')
+    .then(response => response.json())
+    .then(console.log)
+  },[]); */
 
 
 //Event Functions
@@ -93,7 +125,22 @@ function  App ()  {
  
      fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
          .then(response => response.text())
-         .then(result => displayFaceBox(calculateFaceLocation(result))) 
+         .then(result => {
+          if(result){
+            fetch('http://localhost:3000/image', {
+              method: 'put',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                  id: user.id
+              })
+            })
+            .then(response => response.json())
+            .then(count => {
+              handleChange(count);
+            })
+          }
+          displayFaceBox(calculateFaceLocation(result))
+        }) 
          .catch(error => console.log('error', error));
     }
 
@@ -116,15 +163,15 @@ function  App ()  {
           {route === 'home' ?
           <div>
             <Logo />
-            <Rank />
+            <Rank name={user.name} entries={user.entries}/>
             <ImageLinkForm
               onInputChange={onInputChange}
               onButtonSubmit={onButtonSubmit} />
             <FaceRecognition box={box} imgURL={imgURL} />
             </div>
           :(route === 'signin'
-             ?<Signin onRouteChange = {onRouteChange}/>
-             : <Register onRouteChange = {onRouteChange} /> )
+             ? <Signin  loadUser = {loadUser} onRouteChange = {onRouteChange}/>
+             : <Register loadUser = {loadUser} onRouteChange = {onRouteChange} /> )
           }
       </div>
     );

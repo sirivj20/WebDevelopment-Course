@@ -1,0 +1,15 @@
+{
+  "name": "santa-coding-challenge",
+  "version": "1.0.0",
+  "description": "coding challemge",
+  "main": "script.js",
+  "scripts": {
+    "test": "npm run test",
+    "run": "npm start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
