@@ -9,10 +9,10 @@ import ParticlesBg from "particles-bg";
 import Signin from "./components/Signin/Signin";
 import Register from "./components/Register/Register";
 
-const USER_ID = "siri";
+const USER_ID = "user_ID";
 // Your PAT (Personal Access Token) can be found in the portal under Authentification
-const PAT = "5149d514adc94f1a94e8ff6ec0be26ae";
-const APP_ID = "my-first-application";
+const PAT = "PAT";
+const APP_ID = "APP_ID";
 // Change these to whatever model and image URL you want to use
 const MODEL_ID = "face-detection";
 const MODEL_VERSION_ID = "6dc7e46bc9124c5c8824be4822abe105";
