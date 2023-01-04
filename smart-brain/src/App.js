@@ -2,20 +2,20 @@ import Navigation from "./components/Navigation/Navigation";
 import Logo from "./components/Logo/Logo";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import "./App.css";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
 import Signin from "./components/Signin/Signin";
 import Register from "./components/Register/Register";
 
-const USER_ID = "user_ID";
+/* const USER_ID = "USERID";
 // Your PAT (Personal Access Token) can be found in the portal under Authentification
-const PAT = "PAT";
-const APP_ID = "APP_ID";
+const PAT = "PATKEY";
+const APP_ID = "APPID";
 // Change these to whatever model and image URL you want to use
 const MODEL_ID = "face-detection";
-const MODEL_VERSION_ID = "6dc7e46bc9124c5c8824be4822abe105";
+const MODEL_VERSION_ID = "6dc7e46bc9124c5c8824be4822abe105"; */
 
 function App() {
   //UseSate
@@ -62,10 +62,10 @@ function App() {
   //Event Functions
 
   const calculateFaceLocation = (data) => {
+    //console.log((data));
     //  const clarifaiFace = res.outputs[0].data[0]..data.regions[0].region_info.bounding_box;
-
-    const clarifaiFace = JSON.parse(data, null, 2).outputs[0].data.regions[0]
-      .region_info.bounding_box;
+//const clarifaiFace = (data, null, 2).outputs[0].data.regions[0]
+    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
 
     const image = document.getElementById("inputImage");
     const width = Number(image.width);
@@ -85,14 +85,16 @@ function App() {
   //input event
   const onInputChange = (e) => {
     setInput(e.target.value);
+    console.log(input);
   };
-  const ID = user.id;
+  
   //Button click Event
   const onButtonSubmit = () => {
     setImgURL(input);
+    console.log(imgURL);
     
     //another method in clarifai site
-    const raw = JSON.stringify({
+/*     const raw = JSON.stringify({
       user_app_id: {
         user_id: USER_ID,
         app_id: APP_ID,
@@ -127,16 +129,22 @@ function App() {
         MODEL_VERSION_ID +
         "/outputs",
       requestOptions
-    )
-      .then((response) => response.text())
+    )  */
+    fetch('http://localhost:3000/imageURL', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        input:imgURL,
+      })
+    })
+      .then((response) => response.json())
       .then((result) => {
         if (result) {
-          console.log(user);
           fetch('http://localhost:3000/image', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              id:ID,
+              id:user.id,
             })
           })
             .then((response) => response.json())
