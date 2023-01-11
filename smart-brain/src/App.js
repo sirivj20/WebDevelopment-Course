@@ -2,7 +2,7 @@ import Navigation from "./components/Navigation/Navigation";
 import Logo from "./components/Logo/Logo";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import "./App.css";
-import React, {  useState } from "react";
+import React, {  useState, useEffect} from "react";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
@@ -88,10 +88,13 @@ function App() {
     console.log(input);
   };
   
+  useEffect (()=>{
+    setImgURL(input);
+  }, [input])
   //Button click Event
   const onButtonSubmit = () => {
-    setImgURL(input);
-    console.log(imgURL);
+    
+  
     
     //another method in clarifai site
 /*     const raw = JSON.stringify({
